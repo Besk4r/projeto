@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"/>
+
+    <link rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer" />
+
+    <link href="./src/output.css" rel="stylesheet">
+
+    <title>Dev Burguer</title>
+</head>
+<body>
+    
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <img 
+                src="./assets/hamb-1.png" 
+                alt="Logo Dev Burguer"
+                class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
+            />
+            <h1 class="text-3xl mt-4 mb-2 text-white font-bold">
+                Dev Burguer
+            </h1>
+            <span class="text-white font-medium">Rua 4 Qd 21 Lt 2, Anápolis-GO</span>
+            
+            <button id="more-info-btn" class="text-white mt-4 underline">
+                Mais informações
+            </button>
+
+            <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
+                <span class="text-white font-medium">Seg à Dom - 18:00 às 22:00</span>
+            </div>
+        </div>
+    </header>
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
+        Conheça nosso cardápio
+    </h2>
+
+    <div id="menu">
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 mx-auto max-w-7xl px-2">
+
+            <div class="flex gap-2">
+                <img 
+                    src="./assets/hamb-1.png" 
+                    alt="Hamburguer Smash"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div>
+                    <p class="font-bold">Hamburguer Smash</p>
+                    <p class="text-sm">Pão levinho de fermentação natural, burger 160g, queijo prato e maionese da casa.</p>
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 19,90</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Smash" data-price="19.90">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <img 
+                  src="./assets/hamb-2.png" 
+                  alt="Hamburguer Duplo"
+                  class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div>
+                  <p class="font-bold">Hamburguer Duplo</p>
+                  <p class="text-sm">Pão levinho de fermentação natural, 2 burgers 160g, queijo prato e maionese da casa.</p>
+                  <div class="flex items-center gap-2 justify-between mt-3">
+                    <p class="font-bold text-lg">R$ 32,90</p>
+                    <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Duplo" data-price="32.90">
+                      <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            <div class="flex gap-2">
+                <img 
+                  src="./assets/hamb-3.png" 
+                  alt="Hamburguer Salad"
+                  class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div>
+                  <p class="font-bold">Hamburguer Salad</p>
+                  <p class="text-sm">Pão levinho de fermentação natural, burger 160g, queijo prato e maionese da casa.</p>
+                  <div class="flex items-center gap-2 justify-between mt-3">
+                    <p class="font-bold text-lg">R$ 35,90</p>
+                    <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer Salad" data-price="35.90">
+                      <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            <div class="flex gap-2">
+                <img 
+                  src="./assets/hamb-4.png" 
+                  alt="Hamburguer da casa"
+                  class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div>
+                  <p class="font-bold">Hamburguer da casa</p>
+                  <p class="text-sm">Pão levinho de fermentação natural, burger 160g, queijo prato e maionese da casa.</p>
+                  <div class="flex items-center gap-2 justify-between mt-3">
+                    <p class="font-bold text-lg">R$ 30,00</p>
+                    <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Hamburguer da casa" data-price="30.00">
+                      <i class="fa fa-cart-plus text-lg text-white"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </main>
+
+        <div class="mx-auto max-w-7xl px-2 my-2">
+            <hr class="my-10"> 
+            <h2 class="font-bold text-3xl">Bebidas</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+            <div class="flex gap-2 w-full">
+                <img 
+                    src="./assets/refri-1.png" 
+                    alt="Coca-Cola Lata"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div class="w-full">
+                    <p class="font-bold">Coca-Cola Lata</p>
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 6,00</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Coca-Cola Lata" data-price="6.00">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-2 w-full">
+                <img 
+                    src="./assets/refri-2.png" 
+                    alt="Guaraná Lata"
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                <div class="w-full">
+                    <p class="font-bold">Guaraná Lata</p>
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ 6,00</p>
+                        <button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="Guaraná Lata" data-price="6.00">
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[98] items-center justify-center hidden" id="info-modal">
+        <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px] max-h-[90vh] overflow-y-auto flex flex-col">
+            <button id="close-info-modal-btn" class="self-end bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center">
+                <i class="fa fa-times"></i>
+            </button>
+            <h2 class="font-bold text-2xl text-center mb-4">Dev Burguer</h2>
+            <nav class="flex justify-center mb-5 border-b" id="info-tabs">
+                <a href="#" data-tab="sobre" class="tab-link px-4 py-2 border-b-2 border-red-500 text-red-500 font-bold">Sobre</a>
+                <a href="#" data-tab="horario" class="tab-link px-4 py-2 text-gray-500">Horário</a>
+                <a href="#" data-tab="pagamento" class="tab-link px-4 py-2 text-gray-500">Pagamento</a>
+            </nav>
+            <div id="tab-content-sobre" class="tab-content flex flex-col items-center">
+                <img src="./assets/hamb-1.png" alt="Logo" class="w-28 h-28 rounded-md mb-4">
+                <p class="text-center text-gray-700 mb-4">Os melhores lanches e porções da cidade, feitos com ingredientes frescos e selecionados. Experimente! 🥳</p>
+                <a href="#" target="_blank" class="flex items-center gap-2 text-lg mb-6"><i class="fab fa-instagram"></i>@devburguer</a>
+                <h3 class="font-bold text-xl">Contato</h3>
+                <div class="flex gap-4 my-4">
+                    <a href="https://wa.me/556294245631" target="_blank" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100">
+                      <i class="fab fa-whatsapp text-green-500"></i>(62) 99424-5631</a>
+                    <a href="tel:62994245631" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100">
+                      <i class="fa fa-phone"></i>(62) 99424-5631</a>
+                </div>
+                <h3 class="font-bold text-xl">Endereço</h3>
+                <p class="text-center">Rua 4 Qd 21 Lt 2, Anápolis - GO</p>
+                <p class="text-center">Munir Calixto</p>
+            </div>
+            <div id="tab-content-horario" class="tab-content hidden"><ul class="w-full"><li class="flex justify-between py-3 border-b"><span>Segunda</span> 
+              <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b"><span>Terça</span> <span class="text-red-500">Fechado</span>
+              </li><li class="flex justify-between py-3 border-b"><span>Quarta</span> <span>18:00 às 22:00</span></li>
+              <li class="flex justify-between py-3 border-b"><span>Quinta</span> <span>18:00 às 22:00</span>
+              </li><li class="flex justify-between py-3 border-b"><span>Sexta</span> 
+                <span>18:00 às 23:00</span></li><li class="flex justify-between py-3 border-b"><span>Sábado</span> 
+                  <span>18:00 às 23:00</span></li><li class="flex justify-between py-3"><span>Domingo</span> <span>18:00 às 22:00</span></li></ul></div>
+            <div id="tab-content-pagamento" class="tab-content hidden"><p class="font-bold">Formas de Pagamento:</p><ul class="list-disc pl-5 mt-2"><li>Cartão de Crédito</li><li>Cartão de Débito</li><li>PIX</li><li>Dinheiro</li></ul></div>
+        </div>
+    </div>
+    <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden" id="modal-cart">
+        <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px] max-h-[90vh] overflow-y-auto">
+            <h2 class="text-center font-bold text-2xl mb-2">Meu carrinho</h2>
+            <div id="cart-items" class="flex justify-between mb-2 flex-col"></div>
+            <p class="font-bold">Total: <span id="cart-total">0,00</span></p>
+            <p class="font-bold mt-4">Tipo de entrega:</p>
+            <div class="flex gap-4">
+                <div class="flex items-center gap-1"><input type="radio" id="delivery" name="deliveryOption" value="delivery" checked />
+                  <label for="delivery">Entrega</label></div>
+                <div class="flex items-center gap-1"><input type="radio" id="pickup" name="deliveryOption" value="pickup" />
+                  <label for="pickup">Retirada no local</label>
+                </div>
+            </div>
+            <div id="address-container">
+                <p class="font-bold mt-4">Endereço de entrega:</p>
+                <input type="text" placeholder="Digite seu endereço completo..." id="address" class="w-full border-2 p-1 rounded my-1"/>
+                <p class="text-red-500 hidden" id="address-warn">Digite seu endereço completo!</p>
+            </div>
+
+            <div id="shipping-container" class="mt-4">
+                <p class="font-bold">Calcular frete:</p>
+                <div class="flex items-center gap-2">
+                    <input type="text" placeholder="Digite seu CEP" id="cep-input" class="w-full border-2 p-1 rounded my-1"/>
+                    <button id="calculate-shipping-btn" class="bg-gray-900 text-white px-4 py-1 rounded">Calcular</button>
+                </div>
+                <p id="shipping-fee" class="mt-1"></p>
+            </div>
+            <div class="mt-4">
+
+                <p class="font-bold">Forma de pagamento:</p>
+                <div class="flex gap-x-4 flex-wrap">
+                    <div class="flex items-center gap-1"><input type="radio" id="credito" name="paymentOption" value="credito"><label for="credito">Crédito</label></div>
+                    <div class="flex items-center gap-1"><input type="radio" id="debito" name="paymentOption" value="debito"><label for="debito">Débito</label></div>
+                    <div class="flex items-center gap-1"><input type="radio" id="dinheiro" name="paymentOption" value="dinheiro"><label for="dinheiro">Dinheiro</label></div>
+                    <div class="flex items-center gap-1"><input type="radio" id="pix" name="paymentOption" value="pix" checked><label for="pix">PIX</label></div>
+                </div>
+            </div>
+            <div id="change-container" class="mt-2 hidden"><p class="font-bold">Troco para quanto?</p>
+              <input type="text" placeholder="Ex: 50" id="change" class="w-full border-2 p-1 rounded my-1"/></div>
+            <div class="flex items-center justify-between mt-5 w-full"><button id="close-modal-btn">Fechar</button>
+              <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar pedido</button></div>
+        </div>
+    </div>
+    <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[100] items-center justify-center hidden" id="pix-modal">
+        <div class="bg-white p-6 rounded-md min-w-[90%] md:min-w-[450px] flex flex-col items-center">
+            <h2 class="text-center font-bold text-2xl mb-2">QR Code PIX</h2>
+            <p class="font-bold text-xl mb-4">Total: <span id="pix-total">0,00</span></p>
+            <img src="./assets/qr-code.png" alt="QR Code PIX" class="w-60 h-60">
+            <p class="font-bold mt-4">Chave PIX:</p>
+            <div class="flex items-center gap-2 mt-2"><span id="pix-key" class="text-lg text-gray-700">geovanesilvaa@jim.com</span>
+              <button id="copy-pix-btn" class="bg-gray-900 text-white px-3 py-1 rounded-md text-sm">Copiar</button></div>
+            <p class="text-sm text-gray-600 mt-4">Após o pagamento, envie o comprovante.</p>
+            <div class="flex items-center justify-center mt-6 w-full">
+              <button id="send-receipt-btn" class="bg-green-500 text-white px-8 py-2 rounded w-full">Já paguei, enviar pedido</button></div>
+        </div>
+    </div>
+    <footer class="w-full bg-red-500 py-3 fixed bottom-0 z-40 flex items-center justify-center">
+        <button class="flex items-center gap-2 text-white font-bold" id="cart-btn">
+            (<span id="cart-count">0</span>) Ver meu carrinho <i class="fa fa-cart-plus text-lg text-white"></i>
+        </button>
+    </footer>
+    <script src="./script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: white ;
+
+}
+
+.cart-animation {
+  animation: pop 0.3s ease-out; /* Animação de 0.3 segundos */
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); } /* Aumenta um pouco de tamanho */
+  100% { transform: scale(1); } /* Volta ao tamanho normal */
+}
