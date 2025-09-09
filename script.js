@@ -1,4 +1,5 @@
-// Aguarda o HTML ser totalmente carregado para então executar o JavaScript
+console.log("O FICHEIRO SCRIPT.JS FOI CARREGADO COM SUCESSO!");
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- BASE DE DADOS DO CARDÁPIO ---
@@ -69,16 +70,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- ⚠️ ATENÇÃO: TABELA DE FRETES (PERSONALIZÁVEL) ---
     const shippingRates = { "75110": 5.00, "75113": 7.00, "75000": 10.00 };
-    
+
     // --- FUNÇÃO PARA POPULAR O CARDÁPIO ---
     function populateMenu() {
+        // Garante que os containers estejam limpos antes de adicionar
+        menuLanches.innerHTML = '';
+        menuBebidas.innerHTML = '';
+        menuSobremesas.innerHTML = '';
+
         menuData.forEach(item => {
             const card = document.createElement("div");
             card.classList.add("flex", "gap-2", "product-card");
-            card.innerHTML = `<img src="${item.image}" alt="${item.name}" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"/><div><p class="font-bold">${item.name}</p><p class="text-sm">${item.description}</p><div class="flex items-center gap-2 justify-between mt-3"><p class="font-bold text-lg">R$ ${item.price.toFixed(2).replace('.', ',')}</p><button class="bg-gray-900 px-5 rounded add-to-cart-btn" data-name="${item.name}" data-price="${item.price}"><i class="fa fa-cart-plus text-lg text-white"></i></button></div></div>`;
-            if (item.category === 'lanche') menuLanches.appendChild(card);
-            else if (item.category === 'bebida') menuBebidas.appendChild(card);
-            else if (item.category === 'sobremesa') menuSobremesas.appendChild(card);
+
+            // O modelo de HTML abaixo é garantidamente correto para o layout
+            card.innerHTML = `
+                <img 
+                    src="${item.image}" 
+                    alt="${item.name}" 
+                    class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300"
+                />
+                 <div class="flex-1">
+                    <p class="font-bold">${item.name}</p>
+                    <p class="text-sm">${item.description}</p>
+                    <div class="flex items-center gap-2 justify-between mt-3">
+                        <p class="font-bold text-lg">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+                        <button 
+                            class="bg-gray-900 px-5 rounded add-to-cart-btn" 
+                            data-name="${item.name}" 
+                            data-price="${item.price}"
+                        >
+                            <i class="fa fa-cart-plus text-lg text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            if (item.category === 'lanche') {
+                menuLanches.appendChild(card);
+            } else if (item.category === 'bebida') {
+                menuBebidas.appendChild(card);
+            } else if (item.category === 'sobremesa') {
+                menuSobremesas.appendChild(card);
+            }
         });
     }
     populateMenu();
@@ -89,8 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
     closeModalBtn.addEventListener("click", () => { cartModal.classList.add("hidden"); cartModal.classList.remove("flex"); });
 
     // --- LÓGICA DO CARRINHO ---
-    menu.addEventListener("click", (e) => { let parentButton = e.target.closest(".add-to-cart-btn"); if (parentButton) { addToCart(parentButton.getAttribute("data-name"), parseFloat(parentButton.getAttribute("data-price"))); } });
-    function addToCart(name, price) { const existingItem = cart.find(item => item.name === name); if(existingItem){ existingItem.quantity++; } else { cart.push({name, price, quantity: 1}); } updateCartModal(); animateCartCounter(); }
+    menu.addEventListener("click", (e) => 
+        { 
+            let parentButton = e.target.closest(".add-to-cart-btn"); 
+            if (parentButton) { addToCart(parentButton.getAttribute("data-name"), parseFloat(parentButton.getAttribute("data-price"))); } 
+        }
+    );
+    function addToCart(name, price) { const existingItem = cart.find(item => item.name === name); 
+        if(existingItem){ existingItem.quantity++; } else { cart.push({name, price, quantity: 1}); } updateCartModal(); animateCartCounter(); Toastify({ text: "Item adicionado!", duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } }).showToast(); }
     cartItemsContainer.addEventListener("click", (e) => { if(e.target.classList.contains("remove-from-cart-btn")) { removeItemCart(e.target.getAttribute("data-name")); } });
     function removeItemCart(name) { const index = cart.findIndex(item => item.name === name); if(index !== -1) { const item = cart[index]; if(item.quantity > 1){ item.quantity--; } else { cart.splice(index, 1); } updateCartModal(); } }
 
@@ -105,13 +144,19 @@ document.addEventListener('DOMContentLoaded', function() {
     addressInput.addEventListener("input", (e) => { if (e.target.value !== "") { addressInput.classList.remove("border-red-500"); addressWarn.classList.add("hidden"); } });
 
     // --- LÓGICA DE FINALIZAÇÃO DO PEDIDO ---
-    checkoutBtn.addEventListener("click", () => { if(!checkRestaurantStatus()){ alert("DESCULPE, O RESTAURANTE ESTÁ FECHADO!"); return; } if(cart.length === 0) return; const delivery = document.querySelector('input[name="deliveryOption"]:checked').value; if(delivery === "delivery" && addressInput.value === "") { addressWarn.classList.remove("hidden"); addressInput.classList.add("border-red-500"); return; } const payment = document.querySelector('input[name="paymentOption"]:checked').value; if(payment === "pix"){ const totalPedido = cart.reduce((total, item) => total + (item.price * item.quantity), 0) + shippingRate; pixTotal.textContent = totalPedido.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); cartModal.classList.add("hidden"); pixModal.classList.remove("hidden"); pixModal.classList.add("flex"); return; } sendOrderToWhatsApp(); });
-    copyPixBtn.addEventListener("click", () => { navigator.clipboard.writeText(pixKeySpan.textContent); copyPixBtn.textContent = "Copiado!"; setTimeout(() => { copyPixBtn.textContent = "Copiar"; }, 2000); });
+    checkoutBtn.addEventListener("click", () => { if(!checkRestaurantStatus()){ Toastify({ text: "DESCULPE, O RESTAURANTE ESTÁ FECHADO!", duration: 3000, gravity: "top", position: "right", style: { background: "#ef4444" } }).showToast(); return; } if(cart.length === 0) return; const delivery = document.querySelector('input[name="deliveryOption"]:checked').value; if(delivery === "delivery" && addressInput.value === "") { addressWarn.classList.remove("hidden"); addressInput.classList.add("border-red-500"); return; } const payment = document.querySelector('input[name="paymentOption"]:checked').value; if(payment === "pix"){ const totalPedido = cart.reduce((total, item) => total + (item.price * item.quantity), 0) + shippingRate; pixTotal.textContent = totalPedido.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); cartModal.classList.add("hidden"); pixModal.classList.remove("hidden"); pixModal.classList.add("flex"); return; } sendOrderToWhatsApp(); });
+    copyPixBtn.addEventListener("click", () => { navigator.clipboard.writeText(pixKeySpan.textContent); Toastify({ text: "Chave PIX copiada!", duration: 2000, gravity: "top", position: "right", style: { background: "#16a34a" } }).showToast(); });
     sendReceiptBtn.addEventListener("click", () => sendOrderToWhatsApp("PIX"));
     function sendOrderToWhatsApp(paymentFromPix = null) { const items = cart.map(item => ` ${item.name} | Qtd: (${item.quantity}) | Preço: R$${item.price.toFixed(2)}\n`).join(""); const subtotal = cart.reduce((t, item) => t + (item.price * item.quantity), 0); const total = subtotal + shippingRate; let message = `*NOVO PEDIDO:*\n\n${items}\n`; message += `*Subtotal:* ${subtotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}\n`; const deliveryMethod = document.querySelector('input[name="deliveryOption"]:checked').value; if(deliveryMethod === "delivery") { message += `*Frete:* ${shippingRate.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}\n`; } message += `*Total do Pedido:* ${total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}\n\n`; let paymentMethod = paymentFromPix || document.querySelector('input[name="paymentOption"]:checked').value; message += `*Forma de Pagamento:* ${paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1)}\n`; if(paymentMethod === "dinheiro" && changeInput.value !== "") { message += `*Troco para:* R$ ${changeInput.value}\n`; } message += (deliveryMethod === "delivery") ? `\n*Endereço de entrega:* ${addressInput.value}` : `\n*Tipo de entrega:* Retirada no local`; const phone = "SEUNUMERODOTELEFONE"; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank"); cart = []; shippingRate = 0; cepInput.value = ""; shippingFeeText.innerHTML = ""; updateCartModal(); cartModal.classList.add("hidden"); pixModal.classList.add("hidden"); }
 
     // --- VERIFICAR HORÁRIO DE FUNCIONAMENTO ---
-    function checkRestaurantStatus() { const data = new Date(); const hora = data.getHours(); return hora >= 18 && hora < 22; }
+    function checkRestaurantStatus() { 
+        //const data = new Date(); 
+        //const hora = data.getHours(); 
+        //return hora >= 18 && hora < 22; 
+        
+        return true; 
+    }
     const isOpen = checkRestaurantStatus(); if(isOpen){ dateSpan.classList.remove("bg-red-500"); dateSpan.classList.add("bg-green-600"); } else { dateSpan.classList.remove("bg-green-600"); dateSpan.classList.add("bg-red-500"); }
     
     // --- LÓGICA DO MODAL DE INFORMAÇÕES E ABAS ---
@@ -124,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     adminLoginBtn.addEventListener("click", () => { adminLoginModal.classList.remove("hidden"); adminLoginModal.classList.add("flex"); });
     adminCloseModalBtn.addEventListener("click", () => { adminLoginModal.classList.add("hidden"); adminLoginModal.classList.remove("flex"); });
     logoutBtn.addEventListener("click", () => { window.location.reload(); });
-    loginBtn.addEventListener("click", () => { const user = "admin"; const pass = "1234"; const userInput = document.getElementById("admin-user-input").value; const passInput = document.getElementById("admin-password-input").value; if (user === userInput && pass === passInput) { alert("Login efetuado com sucesso!"); adminLoginBtn.classList.add("hidden"); logoutContainer.classList.remove("hidden"); enterAdminMode(); adminLoginModal.classList.add("hidden"); adminLoginModal.classList.remove("flex"); } else { alert("Usuário ou senha inválidos!"); } document.getElementById("admin-user-input").value = ""; document.getElementById("admin-password-input").value = ""; });
+    loginBtn.addEventListener("click", () => { const user = "admin"; const pass = "1234"; const userInput = document.getElementById("admin-user-input").value; const passInput = document.getElementById("admin-password-input").value; if (user === userInput && pass === passInput) { Toastify({ text: "Login efetuado com sucesso!", duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } }).showToast(); adminLoginBtn.classList.add("hidden"); logoutContainer.classList.remove("hidden"); enterAdminMode(); adminLoginModal.classList.add("hidden"); adminLoginModal.classList.remove("flex"); } else { Toastify({ text: "Usuário ou senha inválidos!", duration: 3000, gravity: "top", position: "right", style: { background: "#ef4444" } }).showToast(); } document.getElementById("admin-user-input").value = ""; document.getElementById("admin-password-input").value = ""; });
     
     // --- FUNÇÕES DO MODO ADMIN ---
     function enterAdminMode() { if (!document.getElementById("add-lanche-btn")) { const addLancheBtnHTML = `<button id="add-lanche-btn" class="w-full bg-green-500 text-white py-2 rounded-lg my-4 font-bold">+ Adicionar Novo Lanche</button>`; menuLanches.insertAdjacentHTML('afterend', addLancheBtnHTML); } if (!document.getElementById("add-bebida-btn")) { const addBebidaBtnHTML = `<button id="add-bebida-btn" class="w-full bg-green-500 text-white py-2 rounded-lg my-4 font-bold">+ Adicionar Nova Bebida</button>`; menuBebidas.insertAdjacentHTML('afterend', addBebidaBtnHTML); } if (!document.getElementById("add-sobremesa-btn")) { const addSobremesaBtnHTML = `<button id="add-sobremesa-btn" class="w-full bg-green-500 text-white py-2 rounded-lg my-4 font-bold">+ Adicionar Nova Sobremesa</button>`; menuSobremesas.insertAdjacentHTML('afterend', addSobremesaBtnHTML); } const productCards = document.querySelectorAll(".product-card"); productCards.forEach(card => { if (card.querySelector(".edit-item-btn")) return; if (card.children[1]) { const adminButtonsHTML = `<div class="flex gap-2 mt-2"><button class="edit-item-btn bg-blue-500 text-white px-3 py-1 rounded text-sm">Editar</button><button class="delete-item-btn bg-red-500 text-white px-3 py-1 rounded text-sm">Excluir</button></div>`; card.children[1].insertAdjacentHTML('beforeend', adminButtonsHTML); } }); }
@@ -132,6 +177,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- LÓGICA DOS BOTÕES DE ADIÇÃO/EDIÇÃO DO ADMIN ---
     document.body.addEventListener("click", function(event) { if (event.target.id === "add-lanche-btn" || event.target.id === "add-bebida-btn" || event.target.id === "add-sobremesa-btn") { modalTitle.textContent = "Adicionar Novo Item"; itemIndexInput.value = "-1"; itemForm.reset(); addEditModal.classList.remove("hidden"); addEditModal.classList.add("flex"); } });
     cancelItemBtn.addEventListener("click", () => { addEditModal.classList.add("hidden"); addEditModal.classList.remove("flex"); });
-    itemForm.addEventListener("submit", (event) => { event.preventDefault(); const newItem = { name: itemNameInput.value, description: itemDescriptionInput.value, price: parseFloat(itemPriceInput.value), image: itemImageInput.value, category: itemCategorySelect.value, }; menuData.push(newItem); menuLanches.innerHTML = ""; menuBebidas.innerHTML = ""; menuSobremesas.innerHTML = ""; populateMenu(); addEditModal.classList.add("hidden"); addEditModal.classList.remove("flex"); alert("Item adicionado com sucesso!"); });
+    itemForm.addEventListener("submit", (event) => { event.preventDefault(); const newItem = { name: itemNameInput.value, description: itemDescriptionInput.value, price: parseFloat(itemPriceInput.value), image: itemImageInput.value, category: itemCategorySelect.value }; const itemIndex = parseInt(itemIndexInput.value); if (itemIndex !== -1) { menuData[itemIndex] = newItem; } else { menuData.push(newItem); } populateMenu(); addEditModal.classList.add("hidden"); addEditModal.classList.remove("flex"); Toastify({ text: "Item salvo com sucesso!", duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } }).showToast(); });
 
 }); // Fim do DOMContentLoaded

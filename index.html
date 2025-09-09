@@ -14,6 +14,8 @@
           crossorigin="anonymous" 
           referrerpolicy="no-referrer" />
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    
     <link href="./src/output.css" rel="stylesheet">
 
     <title>Dev Burguer</title>
@@ -36,7 +38,7 @@
                 Mais informações
             </button>
 
-            <div class="bg-green-600 px-4 py-1 rounded-lg mt-5" id="date-span">
+            <div class="bg-red-500 px-4 py-1 rounded-lg mt-5" id="date-span">
                 <span class="text-white font-medium">Seg à Dom - 18:00 às 22:00</span>
             </div>
         </div>
@@ -53,16 +55,17 @@
             <hr class="my-10"> 
             <h2 class="font-bold text-3xl">Bebidas</h2>
         </div>
+
         <div id="menu-bebidas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 mx-auto max-w-7xl px-2">
-            </div>
+             </div>
 
         <div class="mx-auto max-w-7xl px-2 my-2">
             <hr class="my-10"> 
             <h2 class="font-bold text-3xl">Sobremesas</h2>
         </div>
+
         <div id="menu-sobremesas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
             </div>
-
     </div>
     <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[98] items-center justify-center hidden" id="info-modal">
         <div class="bg-white p-5 rounded-md min-w-[90%] md:min-w-[600px] max-h-[90vh] overflow-y-auto flex flex-col">
@@ -81,15 +84,27 @@
                 <a href="#" target="_blank" class="flex items-center gap-2 text-lg mb-6"><i class="fab fa-instagram"></i>@devburguer</a>
                 <h3 class="font-bold text-xl">Contato</h3>
                 <div class="flex gap-4 my-4">
-                    <a href="https://wa.me/5562999999999" target="_blank" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100"><i class="fab fa-whatsapp text-green-500"></i>(62) 99999-9999</a>
-                    <a href="tel:62999999999" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100"><i class="fa fa-phone"></i>(62) 99999-9999</a>
+                    <a href="https://wa.me/5562999999999" target="_blank" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100">
+                      <i class="fab fa-whatsapp text-green-500"></i>(62) 99999-9999
+                    </a>
+                    <a href="tel:62999999999" class="flex items-center gap-2 border-2 border-gray-400 px-4 py-2 rounded-lg hover:bg-gray-100">
+                      <i class="fa fa-phone"></i>(62) 99999-9999
+                    </a>
                 </div>
                 <h3 class="font-bold text-xl">Endereço</h3>
                 <p class="text-center">Rua Dev nº 10, Anápolis - GO</p>
                 <p class="text-center">Residencial Central</p>
             </div>
-            <div id="tab-content-horario" class="tab-content hidden"><ul class="w-full"><li class="flex justify-between py-3 border-b"><span>Segunda</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b"><span>Terça</span> <span class="text-red-500">Fechado</span></li><li class="flex justify-between py-3 border-b"><span>Quarta</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b"><span>Quinta</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b"><span>Sexta</span> <span>18:00 às 23:00</span></li><li class="flex justify-between py-3 border-b"><span>Sábado</span> <span>18:00 às 23:00</span></li><li class="flex justify-between py-3"><span>Domingo</span> <span>18:00 às 22:00</span></li></ul></div>
-            <div id="tab-content-pagamento" class="tab-content hidden"><p class="font-bold">Formas de Pagamento:</p><ul class="list-disc pl-5 mt-2"><li>Cartão de Crédito</li><li>Cartão de Débito</li><li>PIX</li><li>Dinheiro</li></ul></div>
+            <div id="tab-content-horario" class="tab-content hidden"><ul class="w-full"><li class="flex justify-between py-3 border-b">
+              <span>Segunda</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b">
+                <span>Terça</span> <span class="text-red-500">Fechado</span></li><li class="flex justify-between py-3 border-b">
+                  <span>Quarta</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b">
+                    <span>Quinta</span> <span>18:00 às 22:00</span></li><li class="flex justify-between py-3 border-b">
+                      <span>Sexta</span> <span>18:00 às 23:00</span></li><li class="flex justify-between py-3 border-b">
+                        <span>Sábado</span> <span>18:00 às 23:00</span></li><li class="flex justify-between py-3">
+                          <span>Domingo</span> <span>18:00 às 22:00</span></li></ul></div>
+            <div id="tab-content-pagamento" class="tab-content hidden"><p class="font-bold">Formas de Pagamento:</p>
+              <ul class="list-disc pl-5 mt-2"><li>Cartão de Crédito</li><li>Cartão de Débito</li><li>PIX</li><li>Dinheiro</li></ul></div>
         </div>
     </div>
     <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[99] items-center justify-center hidden" id="modal-cart">
@@ -99,8 +114,10 @@
             <p class="font-bold">Total: <span id="cart-total">0,00</span></p>
             <p class="font-bold mt-4">Tipo de entrega:</p>
             <div class="flex gap-4">
-                <div class="flex items-center gap-1"><input type="radio" id="delivery" name="deliveryOption" value="delivery" checked /><label for="delivery">Entrega</label></div>
-                <div class="flex items-center gap-1"><input type="radio" id="pickup" name="deliveryOption" value="pickup" /><label for="pickup">Retirada no local</label></div>
+                <div class="flex items-center gap-1"><input type="radio" id="delivery" name="deliveryOption" value="delivery" checked />
+                  <label for="delivery">Entrega</label></div>
+                <div class="flex items-center gap-1"><input type="radio" id="pickup" name="deliveryOption" value="pickup" />
+                  <label for="pickup">Retirada no local</label></div>
             </div>
             <div id="address-container">
                 <p class="font-bold mt-4">Endereço de entrega:</p>
@@ -124,19 +141,27 @@
                     <div class="flex items-center gap-1"><input type="radio" id="pix" name="paymentOption" value="pix" checked><label for="pix">PIX</label></div>
                 </div>
             </div>
-            <div id="change-container" class="mt-2 hidden"><p class="font-bold">Troco para quanto?</p><input type="text" placeholder="Ex: 50" id="change" class="w-full border-2 p-1 rounded my-1"/></div>
-            <div class="flex items-center justify-between mt-5 w-full"><button id="close-modal-btn">Fechar</button><button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar pedido</button></div>
+            <div id="change-container" class="mt-2 hidden"><p class="font-bold">Troco para quanto?</p>
+              <input type="text" placeholder="Ex: 50" id="change" class="w-full border-2 p-1 rounded my-1"/></div>
+            <div class="flex items-center justify-between mt-5 w-full"><button id="close-modal-btn">Fechar</button>
+              <button id="checkout-btn" class="bg-green-500 text-white px-4 py-1 rounded">Finalizar pedido</button></div>
         </div>
     </div>
     <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[100] items-center justify-center hidden" id="pix-modal">
         <div class="bg-white p-6 rounded-md min-w-[90%] md:min-w-[450px] flex flex-col items-center">
             <h2 class="text-center font-bold text-2xl mb-2">QR Code PIX</h2>
-            <p class="font-bold text-xl mb-4">Total: <span id="pix-total">0,00</span></p>
+            <p class="font-bold text-xl mb-4">Total: 
+              <span id="pix-total">0,00</span>
+            </p>
             <img src="./assets/qr-code.png" alt="QR Code PIX" class="w-60 h-60">
             <p class="font-bold mt-4">Chave PIX:</p>
-            <div class="flex items-center gap-2 mt-2"><span id="pix-key" class="text-lg text-gray-700">SUA-CHAVE-PIX-AQUI</span><button id="copy-pix-btn" class="bg-gray-900 text-white px-3 py-1 rounded-md text-sm">Copiar</button></div>
+            <div class="flex items-center gap-2 mt-2"><span id="pix-key" class="text-lg text-gray-700">SUA-CHAVE-PIX-AQUI</span>
+              <button id="copy-pix-btn" class="bg-gray-900 text-white px-3 py-1 rounded-md text-sm">Copiar</button>
+            </div>
             <p class="text-sm text-gray-600 mt-4">Após o pagamento, envie o comprovante.</p>
-            <div class="flex items-center justify-center mt-6 w-full"><button id="send-receipt-btn" class="bg-green-500 text-white px-8 py-2 rounded w-full">Já paguei, enviar pedido</button></div>
+            <div class="flex items-center justify-center mt-6 w-full">
+              <button id="send-receipt-btn" class="bg-green-500 text-white px-8 py-2 rounded w-full">Já paguei, enviar pedido</button>
+            </div>
         </div>
     </div>
     <div class="bg-black/50 w-full h-full fixed top-0 left-0 z-[101] items-center justify-center hidden" id="add-edit-modal">
@@ -204,6 +229,8 @@
             </div>
         </div>
     </footer>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     
     <script src="./script.js" defer></script>
 </body>
