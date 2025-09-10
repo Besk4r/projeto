@@ -16,3 +16,20 @@ body{
   50% { transform: scale(1.5); } /* Aumenta um pouco de tamanho */
   100% { transform: scale(1); } /* Volta ao tamanho normal */
 }
+
+/* ... código da animação do carrinho ... */
+
+/* Estilos para o Loader Spinner */
+.loader-spinner {
+  border: 8px solid #f3f3f3; /* Cinza claro */
+  border-top: 8px solid #ef4444; /* Vermelho */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
