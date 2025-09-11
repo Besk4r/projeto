@@ -70,6 +70,45 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- TABELA DE FRETES ---
     const shippingRates = { "75133": 5.00, "75113": 7.00, "75000": 10.00 };
     
+    // --- ADICIONADO: FUNÇÕES PARA SALVAR E CARREGAR O ESTADO DO PEDIDO ---
+    function saveOrderState() {
+        const orderState = {
+            cart: cart,
+            deliveryOption: document.querySelector('input[name="deliveryOption"]:checked').value,
+            address: addressInput.value,
+            cep: cepInput.value,
+            shippingRate: shippingRate,
+        };
+        localStorage.setItem("orderState", JSON.stringify(orderState));
+    }
+
+    function loadOrderState() {
+        const savedState = JSON.parse(localStorage.getItem("orderState"));
+        if (savedState) {
+            cart = savedState.cart || [];
+            shippingRate = savedState.shippingRate || 0;
+            addressInput.value = savedState.address || "";
+            cepInput.value = savedState.cep || "";
+
+            // Atualiza a UI com os dados carregados
+            const savedDeliveryOption = savedState.deliveryOption || "delivery";
+            const deliveryRadio = document.querySelector(`input[name="deliveryOption"][value="${savedDeliveryOption}"]`);
+            if(deliveryRadio) {
+                deliveryRadio.checked = true;
+                // Dispara o evento 'change' para garantir que a UI (ex: campo de endereço) seja atualizada
+                deliveryRadio.dispatchEvent(new Event('change'));
+            }
+
+            if (shippingRate > 0) {
+                 shippingFeeText.innerHTML = `Frete: ${shippingRate.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} <i class="fas fa-check-circle text-green-500"></i>`;
+            } else if (cepInput.value) {
+                shippingFeeText.innerHTML = `Frete: <span class="text-red-500">Não entregamos neste CEP</span>`;
+            }
+
+            updateCartModal();
+        }
+    }
+
     // --- FUNÇÃO PARA POPULAR O CARDÁPIO ---
     function populateMenu() {
         menuLanches.innerHTML = '';
@@ -91,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (item.category === 'sobremesa') menuSobremesas.appendChild(card);
         });
     }
-    populateMenu();
 
     // --- LÓGICA DO MODAL DO CARRINHO ---
     cartBtn.addEventListener("click", () => { updateCartModal(); cartModal.classList.remove("hidden"); cartModal.classList.add("flex"); });
@@ -107,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
     { const existingItem = cart.find(item => item.name === name); 
         if(existingItem){ existingItem.quantity++; } 
         else { cart.push({name, price, quantity: 1}); } 
-            updateCartModal(); animateCartCounter(); Toastify
+            updateCartModal(); animateCartCounter(); saveOrderState(); // MODIFICADO
+        Toastify
         (
             { text: "Item adicionado!", 
-                duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } 
+              duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } 
             }
         ).showToast(); 
     }
@@ -126,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { 
             const item = cart[index]; 
             if(item.quantity > 1){ item.quantity--; } 
-            else { cart.splice(index, 1); } updateCartModal(); 
+            else { cart.splice(index, 1); } updateCartModal(); saveOrderState(); // MODIFICADO
         } 
     }
 
@@ -158,13 +197,14 @@ document.addEventListener('DOMContentLoaded', function() {
         ("change", (e) => 
             { if(e.target.value === "delivery") 
                 { addressContainer.classList.remove("hidden"); 
-                    shippingContainer.classList.remove("hidden"); 
+                  shippingContainer.classList.remove("hidden"); 
                 } 
                 else 
                 { 
                     addressContainer.classList.add("hidden"); shippingContainer.classList.add("hidden"); 
                     addressInput.value = ""; shippingRate = 0; shippingFeeText.innerHTML = ""; cepInput.value = ""; updateCartModal(); 
                 } 
+                saveOrderState(); // ADICIONADO
             }
         )
     );
@@ -176,19 +216,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 shippingRates[cepPrefix]; 
                 shippingFeeText.innerHTML = `Frete: ${shippingRate.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} 
                     <i class="fas fa-check-circle text-green-500"></i>`; 
-            } else { shippingRate = 0; shippingFeeText.innerHTML = `Frete: <span class="text-red-500">Não entregamos neste CEP</span>`; } updateCartModal(); 
+            } else { shippingRate = 0; shippingFeeText.innerHTML = `Frete: <span class="text-red-500">Não entregamos neste CEP</span>`; } updateCartModal(); saveOrderState(); // MODIFICADO
         }
     );
     paymentOptions.forEach
     (o => o.addEventListener
         ("change", (e) => 
-            {   
+            {   
                 if(e.target.value === "dinheiro") { changeContainer.classList.remove("hidden"); } 
                 else { changeContainer.classList.add("hidden"); changeInput.value = ""; } 
             }
         )
     );
-        addressInput.addEventListener("input", (e) => { if (e.target.value !== "") { addressInput.classList.remove("border-red-500"); addressWarn.classList.add("hidden"); } });
+        addressInput.addEventListener("input", (e) => { 
+            if (e.target.value !== "") { addressInput.classList.remove("border-red-500"); addressWarn.classList.add("hidden"); }
+            saveOrderState(); // ADICIONADO
+        });
+        
+    // --- ADICIONADO: listener para salvar o CEP ---
+    cepInput.addEventListener("input", saveOrderState);
+
 
     // --- LÓGICA DE FINALIZAÇÃO DO PEDIDO ---
         checkoutBtn.addEventListener
@@ -197,9 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
         { if(!checkRestaurantStatus())
             { Toastify(
                 { text: "DESCULPE, O RESTAURANTE ESTÁ FECHADO!", 
-                    duration: 3000, gravity: "top", position: "right", style: { background: "#ef4444" } 
+                  duration: 3000, gravity: "top", position: "right", style: { background: "#ef4444" } 
                 }).showToast();return; 
-            }   
+            }   
                 if(cart.length === 0) return; const delivery = document.querySelector('input[name="deliveryOption"]:checked').value; 
                 if(delivery === "delivery" && addressInput.value === "") { addressWarn.classList.remove("hidden"); addressInput.classList.add("border-red-500"); return;} 
                     const payment = document.querySelector('input[name="paymentOption"]:checked').value; 
@@ -219,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     );
         sendReceiptBtn.addEventListener("click", () => sendOrderToWhatsApp("PIX")); function sendOrderToWhatsApp(paymentFromPix = null) 
-    {   
+    {   
         const items = cart.map(item => ` ${item.name} | Qtd: (${item.quantity}) | Preço: R$${item.price.toFixed(2)}\n`).join(""); 
         const subtotal = cart.reduce((t, item) => t + (item.price * item.quantity), 0); 
         const total = subtotal + shippingRate; 
@@ -228,16 +275,25 @@ document.addEventListener('DOMContentLoaded', function() {
             if(deliveryMethod === "delivery") { 
                 message += `*Frete:* ${shippingRate.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}\n`; } 
                 message += `*Total do Pedido:* ${total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}\n\n`; 
-            let paymentMethod = paymentFromPix || document.querySelector('input[name="paymentOption"]:checked').value; message += `*Forma de Pagamento:* 
-            ${paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1)}\n`; if(paymentMethod === "dinheiro" && changeInput.value !== "") 
+            let paymentMethod = paymentFromPix || document.querySelector('input[name="paymentOption"]:checked').value; message += `*Forma de Pagamento:* ${paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1)}\n`; if(paymentMethod === "dinheiro" && changeInput.value !== "") 
                 { message += `*Troco para:* R$ ${changeInput.value}\n`; } message += (deliveryMethod === "delivery") 
             ? `\n*Endereço de entrega:* ${addressInput.value}` : `\n*Tipo de entrega:* Retirada no local`; 
 
         const phone = "62994245631"; 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank"); 
 
-            cart = []; shippingRate = 0; cepInput.value = ""; shippingFeeText.innerHTML = ""; 
-                updateCartModal(); cartModal.classList.add("hidden"); pixModal.classList.add("hidden"); 
+            cart = []; 
+            shippingRate = 0; 
+            addressInput.value = ""; // MODIFICADO: Limpa o campo de endereço
+            cepInput.value = ""; 
+            shippingFeeText.innerHTML = ""; 
+            
+            // MODIFICADO: Limpa o estado salvo no localStorage
+            localStorage.removeItem("orderState");
+            
+            updateCartModal(); 
+            cartModal.classList.add("hidden"); 
+            pixModal.classList.add("hidden"); 
     }
 
     // --- VERIFICAR HORÁRIO DE FUNCIONAMENTO ---
@@ -291,9 +347,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         infoTabs.forEach(t => { 
                             t.classList.remove("border-red-500", "text-red-500"); 
                             t.classList.add("text-gray-500"); }); 
-                            tab.classList.add("border-red-500", "text-red-500"); 
-                            infoTabContents.forEach(c => c.classList.add("hidden")); 
-                            document.getElementById(`tab-content-${tab.getAttribute("data-tab")}`).classList.remove("hidden"); 
+                        tab.classList.add("border-red-500", "text-red-500"); 
+                        infoTabContents.forEach(c => c.classList.add("hidden")); 
+                        document.getElementById(`tab-content-${tab.getAttribute("data-tab")}`).classList.remove("hidden"); 
                     }
                 ); 
             }
@@ -365,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } 
             const productCards = document.querySelectorAll(".product-card"); 
                 productCards.forEach
-        (   
+        (   
             card => 
             { if (card.querySelector(".edit-item-btn")) return; if (card.children[1]) 
                 { 
@@ -433,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
     );
 
         cancelItemBtn.addEventListener
-    ("click", () =>  
+    ("click", () =>  
         {
             addEditModal.classList.add("hidden");
             addEditModal.classList.remove("flex");
@@ -465,12 +521,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             populateMenu();
             enterAdminMode();
-            populateMenu();
-            enterAdminMode(); // Reaplica os botões de admin para o caso de o nome do item ter mudado
             addEditModal.classList.add("hidden");
             addEditModal.classList.remove("flex");
             Toastify({ text: "Item salvo com sucesso!", duration: 3000, gravity: "top", position: "right", style: { background: "#16a34a" } }).showToast();
         }
     );
+
+    // --- ADICIONADO: Executa as funções iniciais ---
+    populateMenu();
+    loadOrderState(); // Carrega o carrinho e outras informações ao iniciar a página
 
 }); // Fim do DOMContentLoaded
