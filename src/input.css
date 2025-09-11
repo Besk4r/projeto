@@ -2,27 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background-color: white ;
-
-}
-
 .cart-animation {
-  animation: pop 0.3s ease-out; /* Animação de 0.3 segundos */
+  animation: pop 0.3s ease-out;
 }
 
 @keyframes pop {
   0% { transform: scale(1); }
-  50% { transform: scale(1.5); } /* Aumenta um pouco de tamanho */
-  100% { transform: scale(1); } /* Volta ao tamanho normal */
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
 }
 
-/* ... código da animação do carrinho ... */
-
-/* Estilos para o Loader Spinner */
 .loader-spinner {
-  border: 8px solid #f3f3f3; /* Cinza claro */
-  border-top: 8px solid #ef4444; /* Vermelho */
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #ef4444;
   border-radius: 50%;
   width: 60px;
   height: 60px;
